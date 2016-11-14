@@ -1,0 +1,55 @@
+使用方法
+
+项目pom.xml
+添加properties
+
+<properties>
+	<javas.output>demo</javas.output>
+	<javas.mainclass>com.test.Main</javas.mainclass>
+	<javas.vmoptions>-server -Xms5120m -Xmx10240m</javas.vmoptions>
+</properties>
+
+* javas.output 输出文件根目录，如例子中值为demo，最后target目录下会生成demo目录和demo.zip文件
+* javas.mainclass javas运行时main类，对应于app.info 中"mainclass:com.test.Main"配置
+* javas.vmoptions javas运行时jvm参数，对应于"app.info vmoptions: -server -Xms512m -Xmx512m"配置
+
+
+添加插件
+<plugins>
+	<!-- 用于寻找依赖包，如果原来项目配置了，不需要重复配置 outputDirectory 必须为${project.build.directory}/lib-->
+	<plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-dependency-plugin</artifactId>
+		<executions>
+			<execution>
+				<id>copy</id>
+				<phase>package</phase>
+				<goals>
+					<goal>copy-dependencies</goal>
+				</goals>
+				<configuration>
+					<outputDirectory>${project.build.directory}/lib</outputDirectory>
+				</configuration>
+			</execution>
+		</executions>
+	</plugin>
+
+	<!-- 固定 -->
+	<plugin>
+		<groupId>cn.unstudy</groupId>
+		<artifactId>javas-package-plugin</artifactId>
+		<version>0.0.1</version>
+		<executions>
+			<execution>
+				<id>package javas</id>
+				<phase>package</phase>
+				<goals>
+					<goal>package</goal>
+				</goals>
+			</execution>
+		</executions>
+	</plugin>
+<plugins>
+
+运行打包
+mvn clean package
