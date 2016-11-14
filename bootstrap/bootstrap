@@ -1,0 +1,4 @@
+#!/bin/bash
+shellDir=$(cd "$(dirname $0)";pwd)
+cd $shellDir
+python bootstrap.py $1 $2
